@@ -30,10 +30,6 @@ macro_rules! bitflags{
                     $((if Self::$flag_name.bits.bitand(self.bits) == 0 {0}else{1})+)*0
                 }
 
-                pub fn intersects_with(&self,other:Self)->bool{
-                    use std::ops::BitAnd;
-                    self.bits.bitand(other.bits) != 0
-                }
                 pub fn iter(&self)->Iter{
                     Iter(&self,1)
                 }
@@ -172,6 +168,12 @@ pub(crate) use bitflags;
 pub(self) mod test {
 
     bitflags! (pub(self) Flags:u8{A=1,B=2,C=4});
+    impl Flags{
+        pub fn intersects_with(&self,other:Self)->bool{
+            use std::ops::BitAnd;
+            self.bits.bitand(other.bits) != 0
+        }
+    }
     #[test]
     fn test() {
         let e1 = Flags::A | Flags::C;
