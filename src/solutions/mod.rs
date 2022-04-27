@@ -1,4 +1,4 @@
-use crate::utils::solution::{Solvable, Solution};
+use crate::utils::solution::{Solution, Solvable};
 
 mod day1;
 mod day4;
@@ -8,9 +8,9 @@ mod day7;
 mod day8;
 mod day9;
 
-use {day1::*,day4::*,day5::*,day6::*,day7::*,day8::*,day9::*};
+use {day1::*, day4::*, day5::*, day6::*, day7::*, day8::*, day9::*};
 
-pub fn get_solutions()->std::io::Result<Vec<Box<dyn Solvable>>>{
+pub fn get_solutions() -> std::io::Result<Vec<Box<dyn Solvable>>> {
     Ok(vec![
         Box::new(Day1Solution::get()?),
         Box::new(Day4Solution::get()?),
@@ -18,6 +18,6 @@ pub fn get_solutions()->std::io::Result<Vec<Box<dyn Solvable>>>{
         Box::new(Day6Solution::get()?),
         Box::new(Day7Solution::get()?),
         Box::new(Day8Solution::get()?),
-        Box::new(Day9Solution::get()?)
+        Box::new(Day9Solution::get()?),
     ])
 }

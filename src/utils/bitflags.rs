@@ -9,7 +9,7 @@ macro_rules! bitflags{
   // use vis type for visibility keyword and ident for struct name
         $vis:vis $struct_name:ident : $flag_type:ty{$(
             // vis for field visibility, ident for field name and ty for field data type
-            $flag_name:ident = $flag_val:expr 
+            $flag_name:ident = $flag_val:expr
         ),*}
     ) => {
             #[derive(Clone,Copy)]
@@ -24,7 +24,7 @@ macro_rules! bitflags{
 
                 pub const ALL:Self = Self{bits:(crate::count!($(Self::$flag_name),*))};
                 pub const NONE:Self = Self{bits:0};
-                
+
                 pub fn count_active(&self)->usize{
                     use std::ops::BitAnd;
                     $((if Self::$flag_name.bits.bitand(self.bits) == 0 {0}else{1})+)*0
@@ -145,7 +145,7 @@ macro_rules! bitflags{
             }
             impl std::fmt::Debug for $struct_name {
                 fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
-                    let debug_string = 
+                    let debug_string =
                         if *self == $struct_name::ALL {"ALL".to_string()}
                         else if *self == $struct_name::NONE {"NONE".to_string()}
                         else{
@@ -161,7 +161,7 @@ macro_rules! bitflags{
                             }
                         };
                     write!(f, "{}::{}",stringify!($struct_name), debug_string)
-                }   
+                }
             }
         }
 }
@@ -169,7 +169,7 @@ macro_rules! bitflags{
 pub(crate) use bitflags;
 
 #[cfg(test)]
-pub(self) mod test{
+pub(self) mod test {
 
     bitflags! (pub(self) Flags:u8{A=1,B=2,C=4});
     #[test]
@@ -177,65 +177,63 @@ pub(self) mod test{
         let e1 = Flags::A | Flags::C;
         let e2 = Flags::B | Flags::C;
         // print
-        assert_eq!((e1 | e2), Flags::A |Flags::B | Flags::C);   // union
-        assert_eq!((e1 & e2), Flags::C);     // intersection
-        assert_eq!((e1 - e2).bits, Flags::A.bits);     // set difference
-        assert_eq!((e1 - e2), Flags::A);     // set difference
-        assert_eq!(!e2, Flags::A);           // set complement
+        assert_eq!((e1 | e2), Flags::A | Flags::B | Flags::C); // union
+        assert_eq!((e1 & e2), Flags::C); // intersection
+        assert_eq!((e1 - e2).bits, Flags::A.bits); // set difference
+        assert_eq!((e1 - e2), Flags::A); // set difference
+        assert_eq!(!e2, Flags::A); // set complement
     }
     #[test]
     fn test2() {
-        let all = Flags::A |Flags::B | Flags::C;
+        let all = Flags::A | Flags::B | Flags::C;
         // print
-        assert!(all.intersects_with(Flags::A));   // union
-        assert!(!all.intersects_with(Flags::NONE));   // union
-        assert!(all.intersects_with(Flags::A));   // union
-        assert!(all.intersects_with(Flags::B));   // union
-        assert!(all.intersects_with(Flags::C));   // union
-        assert_eq!(Flags::NONE,0.into());   // union
-        assert_eq!(all,Flags::ALL);   // union
+        assert!(all.intersects_with(Flags::A)); // union
+        assert!(!all.intersects_with(Flags::NONE)); // union
+        assert!(all.intersects_with(Flags::A)); // union
+        assert!(all.intersects_with(Flags::B)); // union
+        assert!(all.intersects_with(Flags::C)); // union
+        assert_eq!(Flags::NONE, 0.into()); // union
+        assert_eq!(all, Flags::ALL); // union
     }
     #[test]
     fn test_count() {
-        assert_eq!(Flags::ALL.count_active(),3);
-        
-        assert_eq!((Flags::A|Flags::B).count_active(),2);
-        assert_eq!((Flags::A|Flags::C).count_active(),2);
-        assert_eq!((Flags::B|Flags::C).count_active(),2);
+        assert_eq!(Flags::ALL.count_active(), 3);
 
-        assert_eq!(Flags::A.count_active(),1);
-        assert_eq!(Flags::B.count_active(),1);
-        assert_eq!(Flags::C.count_active(),1);
+        assert_eq!((Flags::A | Flags::B).count_active(), 2);
+        assert_eq!((Flags::A | Flags::C).count_active(), 2);
+        assert_eq!((Flags::B | Flags::C).count_active(), 2);
 
-        assert_eq!(Flags::NONE.count_active(),0);
+        assert_eq!(Flags::A.count_active(), 1);
+        assert_eq!(Flags::B.count_active(), 1);
+        assert_eq!(Flags::C.count_active(), 1);
+
+        assert_eq!(Flags::NONE.count_active(), 0);
     }
 
     #[test]
     fn test_iter_all() {
         let mut iter_all = Flags::ALL.iter_all();
-        
-        assert_eq!(iter_all.next(), Some((Flags::A,true)));
-        assert_eq!(iter_all.next(), Some((Flags::B,true)));
-        assert_eq!(iter_all.next(), Some((Flags::C,true)));
+
+        assert_eq!(iter_all.next(), Some((Flags::A, true)));
+        assert_eq!(iter_all.next(), Some((Flags::B, true)));
+        assert_eq!(iter_all.next(), Some((Flags::C, true)));
         assert_eq!(iter_all.next(), None);
 
-
         let mut iter_none = Flags::NONE.iter_all();
-        
-        assert_eq!(iter_none.next(), Some((Flags::A,false)));
-        assert_eq!(iter_none.next(), Some((Flags::B,false)));
-        assert_eq!(iter_none.next(), Some((Flags::C,false)));
+
+        assert_eq!(iter_none.next(), Some((Flags::A, false)));
+        assert_eq!(iter_none.next(), Some((Flags::B, false)));
+        assert_eq!(iter_none.next(), Some((Flags::C, false)));
         assert_eq!(iter_none.next(), None);
     }
     #[test]
     fn test3() {
-
         let all = Flags::ALL;
         let mut all_iter = all.iter();
 
-        assert_eq!(all_iter.next(),Some(Flags::A));
-        assert_eq!(all_iter.next(),Some(Flags::B));
-        assert_eq!(all_iter.next(),Some(Flags::C));
-        assert_eq!(all_iter.next(),None);
+        assert_eq!(all_iter.next(), Some(Flags::A));
+        assert_eq!(all_iter.next(), Some(Flags::B));
+        assert_eq!(all_iter.next(), Some(Flags::C));
+        assert_eq!(all_iter.next(), None);
     }
 }
