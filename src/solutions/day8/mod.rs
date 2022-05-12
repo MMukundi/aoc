@@ -24,10 +24,7 @@ impl Solution for Day8Solution {
             .map(|e| {
                 e.outputs
                     .iter()
-                    .filter(|o| match o.count_active() {
-                        2 | 3 | 4 | 7 => true,
-                        _ => false,
-                    })
+                    .filter(|o| matches!(o.count_active(), 2 | 3 | 4 | 7))
                     .count()
             })
             .sum()
@@ -35,7 +32,7 @@ impl Solution for Day8Solution {
 
     fn solve_second_star(&mut self) -> Self::Answer {
         let actuals = (0..10)
-            .map(|i| Entry::segments_for(i))
+            .map(Entry::segments_for)
             .collect::<Vec<Segments>>();
         let digit_map = actuals
             .iter()

@@ -1,6 +1,6 @@
 use std::str::FromStr;
 
-use crate::utils::{iter::IterAddons, solution::Solution};
+use crate::utils::{solution::Solution,iter::IterAddons};
 
 #[derive(Debug)]
 struct Board(Vec<usize>, Vec<bool>, Option<(usize, usize)>);
@@ -8,10 +8,12 @@ struct Board(Vec<usize>, Vec<bool>, Option<(usize, usize)>);
 impl Board {
     fn update(&mut self, ball: &usize, i: usize) {
         if self.2.is_none() {
-            self.0
+            if let Some(i)=self.0
                 .iter()
                 .position(|b| b == ball)
-                .map(|i| self.1[i] = true);
+                {
+                    self.1[i] = true
+                }
             self.2 = if self.has_won() {
                 Some((i, *ball))
             } else {
@@ -28,7 +30,7 @@ impl Board {
             .any(|i| self.all_true(&mut i.into_iter()))
             || (0usize..5)
                 .map(|c| (0usize..25).skip(c).step_by(5))
-                .any(|i| self.all_true(&mut i.into_iter()))
+                .any(|mut i| self.all_true(&mut i))
     }
     fn score(&self) -> usize {
         self.0
@@ -93,7 +95,7 @@ impl Solution for Day4Solution {
         let balls = lines
             .next()
             .unwrap()
-            .split(",")
+            .split(',')
             .map(|n| n.parse::<usize>().unwrap())
             .collect::<Vec<usize>>();
         let mut boards: Vec<Board> = lines.map(|line| line.parse::<Board>().unwrap()).collect();

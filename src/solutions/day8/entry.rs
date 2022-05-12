@@ -12,13 +12,6 @@ bitflags!(Segments: u8 {
     G = 64
 });
 
-impl Default for Segments {
-    fn default() -> Self {
-        Self {
-            bits: Default::default(),
-        }
-    }
-}
 impl FromStr for Segments {
     type Err = ();
 
@@ -35,7 +28,7 @@ impl FromStr for Segments {
                 _ => Segments::NONE,
             })
             .reduce(|s1, s2| s1 | s2)
-            .map_or(Err(()), |s| Ok(s))
+            .map_or(Err(()), Ok)
     }
 }
 
@@ -98,22 +91,22 @@ impl FromStr for Entry {
             could_be: [Segments::ALL; 7],
         };
         let mut entry_str = s.split(" | ");
-        entry_str.next().map(|s| {
+        if let Some(s)=entry_str.next() {
             let pattern_iter = s.split_whitespace();
             entry
                 .signal_patterns
                 .iter_mut()
                 .zip(pattern_iter)
                 .for_each(|(dest, src)| *dest = src.parse::<Segments>().unwrap());
-        });
-        entry_str.next().map(|s| {
+        };
+        if let Some(s)=entry_str.next() {
             let outputs_iter = s.split_whitespace();
             entry
                 .outputs
                 .iter_mut()
                 .zip(outputs_iter)
                 .for_each(|(dest, src)| *dest = src.parse::<Segments>().unwrap());
-        });
+        };
         Ok(entry)
     }
 }

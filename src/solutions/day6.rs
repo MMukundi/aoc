@@ -6,7 +6,7 @@ pub struct Day6Solution {
     day: usize,
 }
 impl Day6Solution {
-    fn sim_day(&mut self) {
+    fn sim_day(&mut self)  {
         let new_fish = self.pools[self.birthing_pool];
         self.pools[(self.birthing_pool + 7) % 9] += new_fish;
         self.birthing_pool = (self.birthing_pool + 1) % 9;
@@ -42,7 +42,7 @@ impl Solution for Day6Solution {
     }
     fn solve(input: String) -> Day6Solution {
         let pools = input
-            .split(",")
+            .split(',')
             .map(|str| str.parse::<usize>().unwrap_or_default())
             .fold([0; 9], |mut all_fish, next_fish| {
                 all_fish[next_fish] += 1;

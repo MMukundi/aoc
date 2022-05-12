@@ -12,7 +12,7 @@ macro_rules! bitflags{
             $flag_name:ident = $flag_val:expr
         ),*}
     ) => {
-            #[derive(Clone,Copy)]
+            #[derive(Default, Clone,Copy)]
             pub struct $struct_name {
                 bits:$flag_type
             }
@@ -50,7 +50,7 @@ macro_rules! bitflags{
                             None
                         }else {
                             let bits = self.1;
-                            self.1 = self.1<<1;
+                            self.1 <<= 1;
                             Some(($struct_name { bits }, self.0.bits.bitand(bits) != 0))
                         }
                     }
@@ -67,7 +67,7 @@ macro_rules! bitflags{
                     else{
                         loop {
                             if (self.1 != 0) && self.0.bits.bitand(self.1)==0{
-                                self.1 = self.1<<1;
+                                self.1 <<= 1;
                             }else{
                                 break
                             }
@@ -78,7 +78,7 @@ macro_rules! bitflags{
                             None
                         }else{
                             let bits = self.1;
-                            self.1 = self.1<<1;
+                            self.1 <<= 1;
                             Some($struct_name { bits })
                         }
                     }

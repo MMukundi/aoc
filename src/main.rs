@@ -18,7 +18,7 @@ fn main() {
         Ok(mut solutions) => {
             let input = std::env::args().nth(1);
             let chr = match &input {
-                Some(s) => s.chars().nth(0).unwrap_or('a'),
+                Some(s) => s.chars().next().unwrap_or('a'),
                 None => 'a',
             };
 
@@ -36,10 +36,10 @@ fn main() {
                     solutions.iter_mut().for_each(|s| s.solve());
                 }
                 Mode::Last => {
-                    solutions.iter_mut().last().map(|s| s.solve());
+                    if let Some(s) = solutions.iter_mut().last() { s.solve() }
                 }
                 Mode::First => {
-                    solutions.iter_mut().nth(0).map(|s| s.solve());
+                    if let Some(s) = solutions.get_mut(0) { s.solve() }
                 }
                 Mode::Only(n) => {
                     solutions

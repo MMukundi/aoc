@@ -7,7 +7,7 @@ struct Line(Point, Point);
 
 impl Line {
     fn iter(&self) -> LineIter {
-        let step = (self.1 - self.0.clone()).to_step();
+        let step = (self.1 - self.0).to_step();
         LineIter {
             curr: self.0,
             end: self.1,

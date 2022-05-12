@@ -4,7 +4,7 @@ impl<I: Iterator> Iterator for Chunks<I> {
     fn next(&mut self) -> Option<Self::Item> {
         let mut take: Vec<I::Item> = Vec::new();
         for _ in 0..self.1 {
-            self.0.next().map(|n| take.push(n));
+            if let Some(n) = self.0.next() { take.push(n) }
         }
         if take.is_empty() {
             None

@@ -2,7 +2,7 @@ use std::cmp::PartialOrd;
 use std::ops::{Add, Div, Sub};
 use std::str::FromStr;
 
-#[derive(Debug, Clone, Copy, Default, Hash, Eq)]
+#[derive(Debug, Clone, Copy, Default, PartialEq, Hash, Eq)]
 pub struct Point {
     pub x: i32,
     pub y: i32,
@@ -51,7 +51,7 @@ impl Point {
 impl FromStr for Point {
     type Err = ();
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let mut coords = s.split(",").map(|s| s.parse::<i32>().unwrap_or(0));
+        let mut coords = s.split(',').map(|s| s.parse::<i32>().unwrap_or(0));
         Ok(Point {
             x: coords.next().unwrap(),
             y: coords.next().unwrap(),
@@ -90,11 +90,7 @@ impl Div for Point {
         }
     }
 }
-impl PartialEq for Point {
-    fn eq(&self, other: &Self) -> bool {
-        self.x == other.x && self.y == other.y
-    }
-}
+
 impl PartialOrd for Point {
     fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
         self.taxi_cab().partial_cmp(&other.taxi_cab())
