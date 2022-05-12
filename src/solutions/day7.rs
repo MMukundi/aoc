@@ -32,7 +32,7 @@ impl Solution for Day7Solution {
 
     fn solve(input: String) -> Self {
         let positions: Vec<usize> = input
-            .split(",")
+            .split(',')
             .map(|str| str.parse::<usize>().unwrap_or_default())
             .collect();
         let (min, max) = positions
@@ -42,7 +42,7 @@ impl Solution for Day7Solution {
             });
         Day7Solution(
             input
-                .split(",")
+                .split(',')
                 .map(|str| str.parse::<usize>().unwrap_or_default())
                 .collect(),
             std::ops::Range {

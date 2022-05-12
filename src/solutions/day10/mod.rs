@@ -52,9 +52,8 @@ pub fn find_corruption<T: Iterator<Item = char>>(chars: T) -> Option<SyntaxError
         .map(|corrupt| match corrupt {
             ChunkChar::Close(c) | ChunkChar::Open(c) => c,
         })
-        .map(|c| SyntaxError::Corrupted(c))
-        .or_else(|| {
-            if open_chunks.len() == 0 {
+        .map(SyntaxError::Corrupted).or({
+            if open_chunks.is_empty() {
                 None
             } else {
                 Some(SyntaxError::Incomplete(open_chunks))
@@ -89,9 +88,7 @@ impl Day10Solution {
         predicate: F,
     ) -> impl Iterator<Item = usize> + 'a {
         self.0
-            .iter()
-            .map(|s| find_corruption(s.chars()))
-            .flatten()
+            .iter().filter_map(|s| find_corruption(s.chars()))
             .filter(predicate)
             .map(SyntaxError::score)
     }
@@ -126,7 +123,7 @@ impl Solution for Day10Solution {
                 }
             })
             .collect();
-        scores.sort();
+        scores.sort_unstable();
         scores[scores.len() / 2]
     }
     fn solve(input: String) -> Self {

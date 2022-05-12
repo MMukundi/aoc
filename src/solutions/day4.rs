@@ -1,6 +1,6 @@
 use std::str::FromStr;
 
-use crate::utils::{iter::IterAddons, solution::Solution};
+use crate::utils::{solution::Solution,iter::IterAddons};
 
 #[derive(Debug)]
 struct Board(Vec<usize>, Vec<bool>, Option<(usize, usize)>);
@@ -93,7 +93,7 @@ impl Solution for Day4Solution {
         let balls = lines
             .next()
             .unwrap()
-            .split(",")
+            .split(',')
             .map(|n| n.parse::<usize>().unwrap())
             .collect::<Vec<usize>>();
         let mut boards: Vec<Board> = lines.map(|line| line.parse::<Board>().unwrap()).collect();

@@ -35,7 +35,7 @@ impl Solution for Day8Solution {
 
     fn solve_second_star(&mut self) -> Self::Answer {
         let actuals = (0..10)
-            .map(|i| Entry::segments_for(i))
+            .map(Entry::segments_for)
             .collect::<Vec<Segments>>();
         let digit_map = actuals
             .iter()

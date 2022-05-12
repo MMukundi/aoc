@@ -6,7 +6,7 @@ pub struct Day6Solution {
     day: usize,
 }
 impl Day6Solution {
-    fn sim_day(&mut self) {
+    fn sim_day(&mut self)  {
         let new_fish = self.pools[self.birthing_pool];
         self.pools[(self.birthing_pool + 7) % 9] += new_fish;
         self.birthing_pool = (self.birthing_pool + 1) % 9;

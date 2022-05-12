@@ -51,7 +51,7 @@ impl Point {
 impl FromStr for Point {
     type Err = ();
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let mut coords = s.split(",").map(|s| s.parse::<i32>().unwrap_or(0));
+        let mut coords = s.split(',').map(|s| s.parse::<i32>().unwrap_or(0));
         Ok(Point {
             x: coords.next().unwrap(),
             y: coords.next().unwrap(),

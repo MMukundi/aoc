@@ -42,7 +42,7 @@ impl Solution for Day11Solution {
         0
     }
     fn solve(input: String) -> Self {
-        let rows = input.matches("\n").count() + 1;
+        let rows = input.matches('\n').count() + 1;
         let vals: Vec<u8> = input
             .split_whitespace()
             .flat_map(|l| l.chars())

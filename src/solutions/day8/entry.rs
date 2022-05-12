@@ -35,7 +35,7 @@ impl FromStr for Segments {
                 _ => Segments::NONE,
             })
             .reduce(|s1, s2| s1 | s2)
-            .map_or(Err(()), |s| Ok(s))
+            .map_or(Err(()), Ok)
     }
 }
 

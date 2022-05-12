@@ -48,20 +48,18 @@ impl HeightMap {
         }
     }
     fn points(&self) -> impl Iterator<Item = (i32, i32)> + '_ {
-        (0..self.1.x)
-            .map(|x| (0..self.1.y).map(move |y| (x, y)))
-            .flatten()
+        (0..self.1.x).flat_map(|x| (0..self.1.y).map(move |y| (x, y)))
     }
     fn low_points(&self) -> impl Iterator<Item = (i32, i32)> + '_ {
         self.points().filter(|(x, y)| {
             let x = *x;
             let y = *y;
             let h = self[(x, y)];
-            let is_low = (self[(x - 1, y)] > h)
+            
+            (self[(x - 1, y)] > h)
                 && (self[(x + 1, y)] > h)
                 && (self[(x, y - 1)] > h)
-                && (self[(x, y + 1)] > h);
-            is_low
+                && (self[(x, y + 1)] > h)
         })
     }
 }
@@ -102,17 +100,15 @@ impl Solution for Day9Solution {
             .low_points()
             .map(|(x, y)| self.map.basin(Point { x, y }).count())
             .collect::<Vec<usize>>();
-        counts.sort();
+        counts.sort_unstable();
         counts.reverse();
         counts.into_iter().take(3).product()
     }
 
     fn solve(input: String) -> Self {
-        let y_size = input.matches("\n").count() + 1;
+        let y_size = input.matches('\n').count() + 1;
         let heights: Vec<i8> = input
-            .lines()
-            .map(|l| l.chars())
-            .flatten()
+            .lines().flat_map(|l| l.chars())
             .map(|c| c.to_digit(10).unwrap_or(9))
             .map(|n| n as i8)
             .collect();

@@ -14,7 +14,7 @@ pub struct FloodfillIter<T: Adjacency + Eq + Hash + Clone, Pred: Fn(&T) -> bool>
 impl<T: Adjacency + Eq + Hash + Clone, Pred: Fn(&T) -> bool> Iterator for FloodfillIter<T, Pred> {
     type Item = T;
     fn next(&mut self) -> Option<Self::Item> {
-        let next_point = self.to_visit.iter().cloned().next();
+        let next_point = self.to_visit.iter().next().cloned();
         next_point.map(|p| {
             let adj = p.adjacenies();
             self.to_visit.remove(&p);
