@@ -168,8 +168,8 @@ pub(crate) use bitflags;
 pub(self) mod test {
 
     bitflags! (pub(self) Flags:u8{A=1,B=2,C=4});
-    impl Flags{
-        pub fn intersects_with(&self,other:Self)->bool{
+    impl Flags {
+        pub fn intersects_with(&self, other: Self) -> bool {
             use std::ops::BitAnd;
             self.bits.bitand(other.bits) != 0
         }

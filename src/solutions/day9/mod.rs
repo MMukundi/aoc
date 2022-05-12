@@ -1,6 +1,6 @@
-use std::collections::HashSet;
 use crate::utils::point::Point;
 use crate::utils::solution::Solution;
+use std::collections::HashSet;
 
 pub struct HeightMap(Vec<i8>, Point);
 pub struct Basin<'a> {

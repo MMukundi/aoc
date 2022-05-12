@@ -1,6 +1,6 @@
 use crate::utils::solution::Solution;
 
-fn count_increases<T: PartialOrd<T>>(values: &Vec<T>) -> usize {
+fn count_increases<T: PartialOrd<T>>(values: &[T]) -> usize {
     values.windows(2).filter(|pair| pair[1] > pair[0]).count()
 }
 pub struct Day1Solution {
